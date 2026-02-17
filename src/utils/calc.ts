@@ -61,11 +61,25 @@ export function mainCalc(
   // grandTotal（到下次大保底）保持不包含 alreadyPass（如你要求）
   const grandTotal = 120 - afterCalcBiggest;
 
-  // --- 计算小保底（每80抽一次） ---（基于包含 alreadyPass 的计数）
+  // ======================
+  // 只修改这里：小保底逻辑
+  // ======================
   const totalDrawsForSmall = afterCalcIncludingAlready;
   const smallPityCount = Math.floor(totalDrawsForSmall / 80);
-  const smallRemainder = totalDrawsForSmall % 80;
-  const drawsToNextSmall = smallRemainder === 0 ? 80 : 80 - smallRemainder;
+  let drawsToNextSmall: number;
+
+  if (smallPityCount === 0) {
+    // 第一次小保底：80
+    drawsToNextSmall = 80 - (totalDrawsForSmall % 80);
+  } else if (smallPityCount === 1) {
+    // 第二次小保底：120
+    const used = totalDrawsForSmall - 80;
+    drawsToNextSmall = 120 - used;
+  } else {
+    // 第三次及以后：回到80循环
+    const used = totalDrawsForSmall - (80 + 120);
+    drawsToNextSmall = 80 - (used % 80);
+  }
 
   // --- 计算大保底（序列：120, 240, 之后每240） ---
   // 仍基于不包含 alreadyPass 的 totalDraws（用于武器寻访相关的保底统计）
