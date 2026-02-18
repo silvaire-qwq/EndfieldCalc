@@ -45,7 +45,7 @@ export function mainCalc(
   // 修正蓝色材料兑换抽数逻辑（基于 newTotalBrc）
   const blueMaterial =
     Math.trunc(newTotalBrc / 10) * 20 +
-    (newTotalBrc - Math.trunc(newTotalBrc / 10)) * 10;
+    (newTotalBrc - Math.trunc(newTotalBrc / 10)) * 5;
   let bluePass = Math.trunc(blueMaterial / 75);
   bluePass = Math.min(bluePass, 5);
 
